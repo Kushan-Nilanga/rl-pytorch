@@ -14,6 +14,7 @@ class Agent(nn.Module):
         self.layer1_size = layer1_size
         self.layer2_size = layer2_size
         self.input_dims = input_dims
+        self.log_probs = None
         self.action_space = [i for i in range(self.n_actions)]  
         self.layer1 = nn.Linear(*self.input_dims, self.layer1_size)
         self.layer2 = nn.Linear(self.layer1_size, self.layer2_size)
@@ -54,11 +55,22 @@ class Agent(nn.Module):
         self.optimizer.zero_grad()
         _, critic_value = self.forward(state)
         _, critic_value_new = self.forward(new_state)
+
+
         delta = reward + self.gamma*critic_value_new*(1-int(done)) - critic_value
-        
+
+        # update actor to take more better actions more and worce actions less
+        # however this might update the policy to terratory where policy will be less optimal
+        # we have to scale this and limit this in future (PPO and TRPO) 
         actor_loss = -self.log_probs * delta
+
+        # critic loss is more or less concerned on making more accurate predictions of state_value
         critic_loss = delta**2
 
+        # in PPO this addition is modified by introducing an entropy to give the policy some randomness
+        # and weighting the critic loss and actor loss accordingly 
         (actor_loss+critic_loss).backward()
+
         self.optimizer.step()
+        return actor_loss, critic_loss+actor_loss
 
