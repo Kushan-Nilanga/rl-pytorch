@@ -14,4 +14,21 @@ The whole subfield of reinforcement learning build up upone the afore mentioned 
 ## Types of Reinforcement Learning
 1. Value Iteration Methods
 2. Policy Iteration Methods
+3. Model Based Methods
 
+#### Before we dive deep into the rabbit hole
+Though the concepts behind these approaches for reinforcement learning methods are quite simple it's quite easy to get lost(been there).
+In order to have a good understanding about the concepts, getting familiar with the specific terminology is mandatory.
+
+__State(_S<sub>t</sub>_)__: Information about the environment at time _t_</br>
+__Action(_A<sub>t</sub>_)__: Action agent took at the time _t_</br>
+__Action Probability of given state(_P(a|s)<sub>t</sub>_)__:
+
+### 1. Value Based Methods (Q-value methods)
+Value based methods focus on approximating the values of a states and taking the optimal actions in order to gain a good trajectory in order to maximize rewards. 
+
+### 2. Policy Iteration Methods
+Unlike value based methods, policy methods focus on approximating the trajectory in which the actions should be taken directly, in order to maximize the expected return. 
+
+### 3. Model Based Methods
+Model based methods try to approximate the dynamics of the environment in order for agent to chose optimal action trajectory.
