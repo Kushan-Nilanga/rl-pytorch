@@ -109,7 +109,8 @@ class PPO:
 
         old_states = T.stack(memory.state_memory).to(self.device).detach()
         old_actions = T.stack(memory.action_memory).to(self.device).detach()
-        old_logprobs = T.stack(memory.log_probs_memory).to(self.device).detach()
+        old_logprobs = T.stack(memory.log_probs_memory).to(
+            self.device).detach()
 
         # Evaluating old actions and values :
         logprobs, state_values, dist_entropy = self.policy.evaluate(
@@ -122,7 +123,8 @@ class PPO:
         advantages = rewards - state_values.detach()
         surr1 = ratios * advantages
         surr2 = T.clamp(ratios, 1-self.clip, 1 + self.clip) * advantages
-        loss = -T.min(surr1, surr2) + 0.5 * (state_values - rewards)**2 - 0.01*dist_entropy
+        loss = -T.min(surr1, surr2) + 0.5 * \
+            (state_values - rewards)**2 - 0.01*dist_entropy
 
         # take gradient step
         self.optimizer.zero_grad()
@@ -154,10 +156,10 @@ if __name__ == '__main__':
             memory.done_memory.append(done)
             Done = done
 
-        if i%10==0:
+        if i % 10 == 0:
             print("learning loss", ppo.learn(memory).mean().item())
             memory.clear_memory()
-        
+
         cu_rewards.append(episode_reward)
         rolling_rewards.append(np.mean(cu_rewards[10:]))
         episode_index.append(i)
@@ -168,4 +170,3 @@ if __name__ == '__main__':
     plt.plot(episode_index, rolling_rewards, label="score")
     plt.legend()
     plt.show()
-
