@@ -31,7 +31,12 @@ class Agent(nn.Module):
         x = f.softmax(self.l2(x), dim=-1)
         return x
 
-    def learn(self):
+    def learn(self, rewards, dones, states):
+        discounted_reward = []
+        for reward, is_terminal in zip(reversed(rewards), reversed(dones)):
+            if is_terminal:
+                discounted_reward = 0
+
         self.zero_grad()
         loss.backward()
         self.optimizer.step()
