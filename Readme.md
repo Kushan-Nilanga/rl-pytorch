@@ -32,3 +32,5 @@ Unlike value based methods, policy methods focus on approximating the trajectory
 
 ### 3. Model Based Methods
 Model based methods try to approximate the dynamics of the environment in order for agent to chose optimal action trajectory.
+
+## Policy iteration methods
