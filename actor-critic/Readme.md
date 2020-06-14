@@ -1,0 +1,1 @@
+Reinforce algorithm has different pitfalls beacause we only increase the probability of the action and the state information is disregarded when making the policy updates. 
