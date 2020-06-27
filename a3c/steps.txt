@@ -4,3 +4,6 @@ prerequisite knowledge
 * model parameter handeling.
 
 algorithm
+
+0.5 - 
+0.5 - 
