@@ -28,7 +28,7 @@ class Memory():
 
 
 class A2CAgent(nn.Module):
-    def __init__(self, gamma=0.99, input_size=4, hidden1_size=256, hidden2_size=256, output_size=2):
+    def __init__(self, gamma=0.9, input_size=4, hidden1_size=256, hidden2_size=256, output_size=2):
         super(A2CAgent, self).__init__()
         self.memory = Memory()
         self.input_size = input_size
