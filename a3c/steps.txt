@@ -1,0 +1,6 @@
+prerequisite knowledge 
+
+* threadding.
+* model parameter handeling.
+
+algorithm
