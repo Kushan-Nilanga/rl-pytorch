@@ -10,7 +10,7 @@ class Agent(nn.Module):
     def __init__(self, gamma=0.99, input_dims=4, l1_dims=256, output_dims=2):
         super().__init__()  # nn.Module is initialised
         self.gamma = gamma
-        self.device = "cuda:0" if t.cuda.is_available() else "cpu:1"
+        self.device = "cuda:0" if t.cuda.is_available() else "cpu:0"
         self.l1 = nn.Linear(input_dims, l1_dims)
         self.l2 = nn.Linear(l1_dims, output_dims)
         self.optimizer = t.optim.Adam(self.parameters(), lr=1e-2)
@@ -54,16 +54,17 @@ class Agent(nn.Module):
         for reward, is_terminal in zip(reversed(self.rews), reversed(self.dones)):
             if is_terminal:
                 discounted_reward = 0
-            discounted_reward = discounted_reward + \
+            discounted_reward = reward + \
                 (self.gamma*discounted_reward)
             rewards.insert(0, discounted_reward)
 
-        rewards = t.tensor(self.rews).to(self.device).detach()
-        rewards = (rewards - rewards.mean()) / \
-            (rewards.std() + 1e-5)  # normalising the rewards
+        rewards = t.tensor(rewards).float().to(self.device)
+        #rewards = (rewards - rewards.mean()) / \
+      #      (rewards.std() + 1e-5)  # normalising the rewards
 
-        log, entr = self.evaluate()
-        loss = -(rewards * log * entr)
+        loss_logprob = t.stack(self.logprobs, dim=0)
+
+        loss = -(rewards * loss_logprob)
 
         self.zero_grad()
         loss.mean().backward()
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     observation = env.reset()
 
     episode_reward = 0
-    for i in range(1000):
+    for i in range(2000):
         done = False
         while(not done):
             # action = env.action_space.sample()  # agent.select_action
