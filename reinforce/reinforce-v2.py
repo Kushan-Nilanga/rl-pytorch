@@ -1,6 +1,7 @@
 import torch as t
 import torch.nn as nn
 import torch.nn.functional as function
+import numpy as np
 
 import gym
 
